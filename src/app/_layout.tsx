@@ -5,11 +5,13 @@ import { I18nProvider } from '@lingui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
+import { PostHogProvider } from 'posthog-react-native'
 import { Image, Text, View } from 'react-native'
 import { StyleSheet, useUnistyles } from 'react-native-unistyles'
 
 import { LanguageToggle } from '@/components/LanguageToggle'
 import { i18n as i18nConfig } from '@/lib/i18n'
+import { posthog } from '@/lib/posthog'
 import { typography } from '@/lib/tokens'
 
 import icon from '@/assets/icon.png'
@@ -85,11 +87,13 @@ function RootStack() {
 
 export default function RootLayout() {
 	return (
-		<QueryClientProvider client={queryClient}>
-			<I18nProvider i18n={i18nConfig}>
-				<RootStack />
-				<StatusBar style="auto" />
-			</I18nProvider>
-		</QueryClientProvider>
+		<PostHogProvider client={posthog}>
+			<QueryClientProvider client={queryClient}>
+				<I18nProvider i18n={i18nConfig}>
+					<RootStack />
+					<StatusBar style="auto" />
+				</I18nProvider>
+			</QueryClientProvider>
+		</PostHogProvider>
 	)
 }

@@ -5,11 +5,11 @@ import { useMMKVString } from 'react-native-mmkv'
 import { StyleSheet } from 'react-native-unistyles'
 
 import { activateLocale, getDeviceLocale, type Locale, locales } from '@/lib/i18n'
-import { STORAGE_KEYS } from '@/lib/storage'
+import { storage, STORAGE_KEYS } from '@/lib/storage'
 
 export function LanguageToggle() {
 	const queryClient = useQueryClient()
-	const [storedLocale, setStoredLocale] = useMMKVString(STORAGE_KEYS.locale)
+	const [storedLocale, setStoredLocale] = useMMKVString(STORAGE_KEYS.locale, storage)
 
 	const locale: Locale =
 		storedLocale && storedLocale in locales
