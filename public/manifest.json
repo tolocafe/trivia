@@ -1,0 +1,21 @@
+{
+  "name": "TOLO Trivia",
+  "short_name": "TOLO Trivia",
+  "description": "Test your coffee knowledge with TOLO Trivia! Answer questions about brewing, roasting, origins, and more.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAFAFA",
+  "theme_color": "#3C2415",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ]
+}
