@@ -6,10 +6,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: es\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
 
 #: src/app/_layout.tsx:38
-msgid "☕️ TOLO Trivia"
-msgstr "☕️ TOLO Trivia"
+#~ msgid "☕️ TOLO Trivia"
+#~ msgstr "☕️ TOLO Trivia"
 
 #: src/components/ScoreDisplay.tsx:102
 msgid "Accuracy"
@@ -19,7 +25,7 @@ msgstr "Precisión"
 msgid "Back to Categories"
 msgstr "Volver a Categorías"
 
-#: src/app/index.tsx:116
+#: src/app/index.tsx:112
 msgid "Check back soon for coffee trivia!"
 msgstr "¡Vuelve pronto para trivia de café!"
 
@@ -27,23 +33,23 @@ msgstr "¡Vuelve pronto para trivia de café!"
 msgid "Correct"
 msgstr "Correctas"
 
-#: src/app/quiz/[categoryId].tsx:216
+#: src/app/quiz/[categoryId].tsx:236
 msgid "Explanation"
 msgstr "Explicación"
 
-#: src/app/quiz/[categoryId].tsx:152
+#: src/app/quiz/[categoryId].tsx:172
 msgid "Go Back"
 msgstr "Volver"
 
-#: src/app/quiz/[categoryId].tsx:232
+#: src/app/quiz/[categoryId].tsx:252
 msgid "Next Question"
 msgstr "Siguiente Pregunta"
 
-#: src/app/index.tsx:113
+#: src/app/index.tsx:109
 msgid "No categories yet"
 msgstr "Aún no hay categorías"
 
-#: src/app/quiz/[categoryId].tsx:148
+#: src/app/quiz/[categoryId].tsx:168
 msgid "No questions available"
 msgstr "No hay preguntas disponibles"
 
@@ -51,7 +57,7 @@ msgstr "No hay preguntas disponibles"
 msgid "Play Again"
 msgstr "Jugar de Nuevo"
 
-#: src/app/index.tsx:99
+#: src/app/index.tsx:94
 msgid "Play Now"
 msgstr "Jugar Ahora"
 
@@ -59,9 +65,13 @@ msgstr "Jugar Ahora"
 msgid "Score"
 msgstr "Puntuación"
 
-#: src/app/quiz/[categoryId].tsx:230
+#: src/app/quiz/[categoryId].tsx:250
 msgid "See Results"
 msgstr "Ver Resultados"
+
+#: src/app/_layout.tsx:61
+msgid "Trivia"
+msgstr "Trivia"
 
 #: src/components/ScoreDisplay.tsx:95
 msgid "Wrong"

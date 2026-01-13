@@ -10,6 +10,7 @@ Guidelines for AI agents working on this codebase.
 | Dataset | `production` |
 | Studio URL | https://tolo-trivia.sanity.studio |
 | Supported Locales | `en`, `es` |
+| Web Hosting | Cloudflare Pages (auto-deploys on push to `main`) |
 
 > Sanity data is publicly accessible (read-only via CORS). No API tokens needed for queries.
 

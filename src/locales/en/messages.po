@@ -14,8 +14,8 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/app/_layout.tsx:38
-msgid "☕️ TOLO Trivia"
-msgstr "☕️ TOLO Trivia"
+#~ msgid "☕️ TOLO Trivia"
+#~ msgstr "☕️ TOLO Trivia"
 
 #: src/components/ScoreDisplay.tsx:102
 msgid "Accuracy"
@@ -25,7 +25,7 @@ msgstr "Accuracy"
 msgid "Back to Categories"
 msgstr "Back to Categories"
 
-#: src/app/index.tsx:116
+#: src/app/index.tsx:112
 msgid "Check back soon for coffee trivia!"
 msgstr "Check back soon for coffee trivia!"
 
@@ -33,23 +33,23 @@ msgstr "Check back soon for coffee trivia!"
 msgid "Correct"
 msgstr "Correct"
 
-#: src/app/quiz/[categoryId].tsx:216
+#: src/app/quiz/[categoryId].tsx:236
 msgid "Explanation"
 msgstr "Explanation"
 
-#: src/app/quiz/[categoryId].tsx:152
+#: src/app/quiz/[categoryId].tsx:172
 msgid "Go Back"
 msgstr "Go Back"
 
-#: src/app/quiz/[categoryId].tsx:232
+#: src/app/quiz/[categoryId].tsx:252
 msgid "Next Question"
 msgstr "Next Question"
 
-#: src/app/index.tsx:113
+#: src/app/index.tsx:109
 msgid "No categories yet"
 msgstr "No categories yet"
 
-#: src/app/quiz/[categoryId].tsx:148
+#: src/app/quiz/[categoryId].tsx:168
 msgid "No questions available"
 msgstr "No questions available"
 
@@ -57,7 +57,7 @@ msgstr "No questions available"
 msgid "Play Again"
 msgstr "Play Again"
 
-#: src/app/index.tsx:99
+#: src/app/index.tsx:94
 msgid "Play Now"
 msgstr "Play Now"
 
@@ -65,9 +65,13 @@ msgstr "Play Now"
 msgid "Score"
 msgstr "Score"
 
-#: src/app/quiz/[categoryId].tsx:230
+#: src/app/quiz/[categoryId].tsx:250
 msgid "See Results"
 msgstr "See Results"
+
+#: src/app/_layout.tsx:61
+msgid "Trivia"
+msgstr "Trivia"
 
 #: src/components/ScoreDisplay.tsx:95
 msgid "Wrong"
