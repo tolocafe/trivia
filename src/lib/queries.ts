@@ -12,7 +12,7 @@ import type {
 export type Category = CATEGORIES_QUERYResult[number]
 export type Subcategory = SUBCATEGORIES_QUERYResult[number]
 export type Question = QUESTIONS_BY_CATEGORY_QUERYResult[number]
-export type Answer = Question['answers'][number]
+export type Answer = NonNullable<Question['answers']>[number]
 
 export const CATEGORIES_QUERY = defineQuery(/* groq */ `
 	*[_type == "category" && !defined(parent)] | order(order asc) {
@@ -60,22 +60,21 @@ export const QUESTIONS_BY_CATEGORY_QUERY = defineQuery(/* groq */ `
 		"text": coalesce(text[_key == $locale][0].value, text[_key == "en"][0].value),
 		category-> {
 			_id,
-			"title": coalesce(title[_key == $locale][0].value, title[_key == "en"][0].value)
+			"title": coalesce(title[_key == $locale][0].value, title[_key == "en"][0].value),
+			timeLimit
 		},
 		"answers": answers[] {
 			_key,
 			"text": coalesce(text[_key == $locale][0].value, text[_key == "en"][0].value)
 		},
 		correctAnswerIndex,
-		difficulty,
 		"explanation": coalesce(explanation[_key == $locale][0].value, explanation[_key == "en"][0].value),
 		image {
 			asset-> {
 				_id,
 				url
 			}
-		},
-		timeLimit
+		}
 	}
 `)
 

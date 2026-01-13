@@ -69,28 +69,45 @@ export default function QuizScreen() {
   const currentQuestion = quizQuestions[currentIndex]
   const totalQuestions = quizQuestions.length
 
+  // Clear timer immediately when showing results
   useEffect(() => {
-    if (currentQuestion && !showResult) {
-      if (timerRef.current) {
-        clearInterval(timerRef.current)
-      }
-      const timeLimit = currentQuestion.timeLimit ?? 20
-      setTimeRemaining(timeLimit)
-
-      timerRef.current = setInterval(() => {
-        setTimeRemaining((prev) => {
-          if (prev <= 1) {
-            clearInterval(timerRef.current!)
-            setShowResult(true)
-            return 0
-          }
-          return prev - 1
-        })
-      }, 1000)
+    if (showResult && timerRef.current) {
+      clearInterval(timerRef.current)
+      timerRef.current = null
     }
+  }, [showResult])
+
+  // Manage countdown timer for each question
+  useEffect(() => {
+    if (!currentQuestion || showResult) return
+
+    // Clear any existing timer
+    if (timerRef.current) {
+      clearInterval(timerRef.current)
+      timerRef.current = null
+    }
+
+    const timeLimit = currentQuestion.category?.timeLimit ?? 20
+    setTimeRemaining(timeLimit)
+
+    timerRef.current = setInterval(() => {
+      setTimeRemaining((prev) => {
+        if (prev <= 1) {
+          if (timerRef.current) {
+            clearInterval(timerRef.current)
+            timerRef.current = null
+          }
+          setShowResult(true)
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+
     return () => {
       if (timerRef.current) {
         clearInterval(timerRef.current)
+        timerRef.current = null
       }
     }
   }, [currentIndex, currentQuestion, showResult])
@@ -100,6 +117,7 @@ export default function QuizScreen() {
 
     if (timerRef.current) {
       clearInterval(timerRef.current)
+      timerRef.current = null
     }
 
     setSelectedAnswer(answerIndex)
@@ -195,7 +213,7 @@ export default function QuizScreen() {
         </Animated.View>
 
         <View style={styles.answersContainer}>
-          {currentQuestion.answers.map((answer, index) => (
+          {currentQuestion.answers?.map((answer, index) => (
             <AnswerButton
               key={answer._key}
               text={answer.text}

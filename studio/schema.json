@@ -100,7 +100,7 @@
           "type": "inline",
           "name": "internationalizedArrayText"
         },
-        "optional": false
+        "optional": true
       },
       "category": {
         "type": "objectAttribute",
@@ -108,7 +108,7 @@
           "type": "inline",
           "name": "category.reference"
         },
-        "optional": false
+        "optional": true
       },
       "answers": {
         "type": "objectAttribute",
@@ -123,7 +123,7 @@
                   "type": "inline",
                   "name": "internationalizedArrayString"
                 },
-                "optional": false
+                "optional": true
               },
               "_type": {
                 "type": "objectAttribute",
@@ -146,33 +146,12 @@
             }
           }
         },
-        "optional": false
+        "optional": true
       },
       "correctAnswerIndex": {
         "type": "objectAttribute",
         "value": {
           "type": "number"
-        },
-        "optional": false
-      },
-      "difficulty": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "union",
-          "of": [
-            {
-              "type": "string",
-              "value": "foundation"
-            },
-            {
-              "type": "string",
-              "value": "intermediate"
-            },
-            {
-              "type": "string",
-              "value": "professional"
-            }
-          ]
         },
         "optional": true
       },
@@ -230,13 +209,6 @@
           }
         },
         "optional": true
-      },
-      "timeLimit": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "number"
-        },
-        "optional": true
       }
     }
   },
@@ -258,28 +230,28 @@
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "bottom": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "left": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "right": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         }
       }
     }
@@ -302,28 +274,28 @@
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "y": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "height": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "width": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         }
       }
     }
@@ -413,7 +385,7 @@
           "type": "inline",
           "name": "internationalizedArrayString"
         },
-        "optional": false
+        "optional": true
       },
       "slug": {
         "type": "objectAttribute",
@@ -421,7 +393,7 @@
           "type": "inline",
           "name": "slug"
         },
-        "optional": false
+        "optional": true
       },
       "description": {
         "type": "objectAttribute",
@@ -506,6 +478,13 @@
           "type": "number"
         },
         "optional": true
+      },
+      "timeLimit": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
       }
     }
   },
@@ -527,7 +506,7 @@
           "value": {
             "type": "string"
           },
-          "optional": false
+          "optional": true
         },
         "source": {
           "type": "objectAttribute",
@@ -719,21 +698,21 @@
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "width": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         },
         "aspectRatio": {
           "type": "objectAttribute",
           "value": {
             "type": "number"
           },
-          "optional": false
+          "optional": true
         }
       }
     }

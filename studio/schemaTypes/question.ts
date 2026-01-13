@@ -62,20 +62,6 @@ export default defineType({
 			validation: (rule) => rule.required().min(0).max(3),
 		}),
 		defineField({
-			name: 'difficulty',
-			title: 'Difficulty',
-			type: 'string',
-			options: {
-				list: [
-					{ title: 'Foundation', value: 'foundation' },
-					{ title: 'Intermediate', value: 'intermediate' },
-					{ title: 'Professional', value: 'professional' },
-				],
-				layout: 'radio',
-			},
-			initialValue: 'foundation',
-		}),
-		defineField({
 			name: 'explanation',
 			title: 'Explanation',
 			type: 'internationalizedArrayText',
@@ -90,22 +76,14 @@ export default defineType({
 			},
 			description: 'Optional image to illustrate the question',
 		}),
-		defineField({
-			name: 'timeLimit',
-			title: 'Time Limit (seconds)',
-			type: 'number',
-			initialValue: 20,
-			validation: (rule) => rule.min(5).max(60),
-		}),
 	],
 	preview: {
 		select: {
 			title: 'text',
 			categoryTitle: 'category.title',
-			difficulty: 'difficulty',
 			media: 'image',
 		},
-		prepare({ title, categoryTitle, difficulty, media }) {
+		prepare({ title, categoryTitle, media }) {
 			const titleArray = title as
 				| Array<{ _key: string; value: string }>
 				| undefined
@@ -117,7 +95,7 @@ export default defineType({
 			return {
 				title:
 					titleText.substring(0, 60) + (titleText.length > 60 ? '...' : ''),
-				subtitle: `${categoryText || 'No category'} • ${difficulty || 'foundation'}`,
+				subtitle: categoryText || 'No category',
 				media,
 			}
 		},

@@ -64,6 +64,14 @@ export default defineType({
 			type: 'number',
 			initialValue: 0,
 		}),
+		defineField({
+			name: 'timeLimit',
+			title: 'Time Limit (seconds)',
+			type: 'number',
+			description: 'Time limit for questions in this category',
+			initialValue: 20,
+			validation: (rule) => rule.min(5).max(60),
+		}),
 	],
 	preview: {
 		select: {
