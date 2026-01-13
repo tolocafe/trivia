@@ -5,14 +5,12 @@ import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useUnistyles } from 'react-native-unistyles'
 
+import { LanguageToggle } from '@/components/LanguageToggle'
 import { i18n as i18nConfig } from '@/lib/i18n'
 
 const queryClient = new QueryClient({
 	defaultOptions: {
-		queries: {
-			gcTime: 1000 * 60 * 30,
-			staleTime: 1000 * 60 * 5,
-		},
+		queries: {},
 	},
 })
 
@@ -35,6 +33,7 @@ function RootStack() {
 			<Stack.Screen
 				name="index"
 				options={{
+					headerRight: () => <LanguageToggle />,
 					title: t`☕️ TOLO Trivia`,
 				}}
 			/>

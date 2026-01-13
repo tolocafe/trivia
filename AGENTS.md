@@ -27,7 +27,7 @@ bunx lingui compile    # Compile PO files to JS
 
 # Sanity Studio (from /studio directory)
 cd studio && bun dev   # Run Sanity Studio locally
-cd studio && bun deploy # Deploy Studio to Sanity
+cd studio && bun run deploy # Deploy Studio to Sanity
 ```
 
 ## Architecture
