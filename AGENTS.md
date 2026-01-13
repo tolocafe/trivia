@@ -62,3 +62,35 @@ cd studio && bun deploy # Deploy Studio to Sanity
 - **Strings**: Lingui only, no hardcoded user-facing text
 - **Types**: Strict mode, never use `any`
 - **Package manager**: bun only (no npm/yarn)
+
+## Git Conventions
+
+Follow [Conventional Commits](https://www.conventionalcommits.org/) specification for all commit messages.
+
+### Format
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Types
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes (formatting, no logic change)
+- `refactor`: Code refactoring (no feature or fix)
+- `perf`: Performance improvements
+- `test`: Adding or updating tests
+- `chore`: Maintenance tasks (deps, config, build)
+- `ci`: CI/CD changes
+
+### Examples
+```
+feat(quiz): add timer for timed quiz mode
+fix(i18n): correct Spanish translation for results screen
+chore(deps): update expo to v52
+refactor(components): extract shared button styles
+```
