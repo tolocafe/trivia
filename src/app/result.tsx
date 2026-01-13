@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/react/macro'
 import { router, useLocalSearchParams } from 'expo-router'
+import Head from 'expo-router/head'
 import { Pressable, Text, View } from 'react-native'
 import { StyleSheet, UnistylesRuntime } from 'react-native-unistyles'
 
@@ -24,6 +25,9 @@ export default function ResultScreen() {
 
 	return (
 		<View style={styles.container}>
+			<Head>
+				<title>Results - TOLO Trivia</title>
+			</Head>
 			<View style={styles.overlay} />
 
 			<View

@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/react/macro'
 import { useQuery } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
+import Head from 'expo-router/head'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   ActivityIndicator,
@@ -182,8 +183,13 @@ export default function QuizScreen() {
     )
   }
 
+  const categoryTitle = currentQuestion?.category?.title ?? 'Quiz'
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
+      <Head>
+        <title>{categoryTitle} - TOLO Trivia</title>
+      </Head>
       <View style={styles.header}>
         <Pressable onPress={handleClose} style={styles.closeButton}>
           <Text style={styles.closeIcon}>✕</Text>

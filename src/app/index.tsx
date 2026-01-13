@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/react/macro'
 import { useQuery } from '@tanstack/react-query'
 import { Link, type Href } from 'expo-router'
+import Head from 'expo-router/head'
 import { useState } from 'react'
 import { ActivityIndicator, FlatList, Text, View } from 'react-native'
 import Animated, { FadeIn, FadeOut, Layout } from 'react-native-reanimated'
@@ -46,6 +47,13 @@ export default function CategoriesScreen() {
 
 	return (
 		<View style={styles.container}>
+			<Head>
+				<title>TOLO Trivia - Coffee Quiz</title>
+				<meta
+					name="description"
+					content="Test your coffee knowledge with fun trivia questions about brewing, roasting, origins, and more."
+				/>
+			</Head>
 			<FlatList
 				data={categories}
 				keyExtractor={(item) => item._id}
