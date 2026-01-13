@@ -1,3 +1,5 @@
+import '@/lib/styles'
+
 import { t } from '@lingui/core/macro'
 import { I18nProvider } from '@lingui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'

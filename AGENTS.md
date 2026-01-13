@@ -2,6 +2,17 @@
 
 Guidelines for AI agents working on this codebase.
 
+## Project Info
+
+| Key | Value |
+|-----|-------|
+| Sanity Project ID | `uen7ijyc` |
+| Dataset | `production` |
+| Studio URL | https://tolo-trivia.sanity.studio |
+| Supported Locales | `en`, `es` |
+
+> Sanity data is publicly accessible (read-only via CORS). No API tokens needed for queries.
+
 ## Commands
 
 | Task | Command |
@@ -141,7 +152,7 @@ bun typegen
 
 **After changing Sanity schema (deploy):**
 ```sh
-cd studio && bun run deploy
+cd studio && bunx sanity schema deploy && bunx sanity deploy
 ```
 
 ## Key Files

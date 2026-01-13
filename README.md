@@ -1,6 +1,8 @@
 # TOLO Trivia
 
-Coffee quiz mobile app built with Expo/React Native.
+Coffee trivia quiz app built with Expo/React Native. Test your coffee knowledge with questions about brewing, roasting, origins, and more.
+
+**Languages:** English, Spanish
 
 ## Getting Started
 
@@ -27,12 +29,19 @@ bun format    # Format with oxfmt
 
 ## Sanity Studio
 
+Content is managed via Sanity CMS. Data is publicly accessible (read-only).
+
 ```bash
 cd studio
 bun install
-bun dev           # Local development
-bun run deploy    # Deploy to sanity.studio
+bun dev                                              # Local development
+bunx sanity schema deploy && bunx sanity deploy      # Deploy schema + studio
 ```
+
+| Key | Value |
+|-----|-------|
+| Project ID | `uen7ijyc` |
+| Dataset | `production` |
 
 ## Tech Stack
 
