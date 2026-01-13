@@ -4,7 +4,7 @@ import { Pressable, Text } from 'react-native'
 import { useMMKVString } from 'react-native-mmkv'
 import { StyleSheet } from 'react-native-unistyles'
 
-import { activateLocale, type Locale, locales } from '@/lib/i18n'
+import { activateLocale, getDeviceLocale, type Locale, locales } from '@/lib/i18n'
 import { STORAGE_KEYS } from '@/lib/storage'
 
 export function LanguageToggle() {
@@ -12,7 +12,9 @@ export function LanguageToggle() {
 	const [storedLocale, setStoredLocale] = useMMKVString(STORAGE_KEYS.locale)
 
 	const locale: Locale =
-		storedLocale && storedLocale in locales ? (storedLocale as Locale) : 'en'
+		storedLocale && storedLocale in locales
+			? (storedLocale as Locale)
+			: getDeviceLocale()
 
 	useEffect(() => {
 		activateLocale(locale)
