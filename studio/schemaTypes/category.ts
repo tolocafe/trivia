@@ -8,7 +8,7 @@ export default defineType({
 		defineField({
 			name: 'title',
 			title: 'Title',
-			type: 'string',
+			type: 'internationalizedArrayString',
 			validation: (rule) => rule.required(),
 		}),
 		defineField({
@@ -16,7 +16,10 @@ export default defineType({
 			title: 'Slug',
 			type: 'slug',
 			options: {
-				source: 'title',
+				source: (doc) =>
+					(
+						doc.title as Array<{ _key: string; value: string }> | undefined
+					)?.find((t) => t._key === 'en')?.value || '',
 				maxLength: 96,
 			},
 			validation: (rule) => rule.required(),
@@ -24,8 +27,7 @@ export default defineType({
 		defineField({
 			name: 'description',
 			title: 'Description',
-			type: 'text',
-			rows: 3,
+			type: 'internationalizedArrayText',
 		}),
 		defineField({
 			name: 'parent',
@@ -70,9 +72,18 @@ export default defineType({
 			media: 'image',
 		},
 		prepare({ title, parentTitle, media }) {
+			const titleArray = title as
+				| Array<{ _key: string; value: string }>
+				| undefined
+			const parentArray = parentTitle as
+				| Array<{ _key: string; value: string }>
+				| undefined
+			const titleText =
+				titleArray?.find((t) => t._key === 'en')?.value || 'Untitled'
+			const parentText = parentArray?.find((t) => t._key === 'en')?.value
 			return {
-				title,
-				subtitle: parentTitle ? `→ ${parentTitle}` : 'Top Level',
+				title: titleText,
+				subtitle: parentText ? `→ ${parentText}` : 'Top Level',
 				media,
 			}
 		},
@@ -85,4 +96,3 @@ export default defineType({
 		},
 	],
 })
-

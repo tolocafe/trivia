@@ -3,10 +3,30 @@ import { I18nProvider } from '@lingui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { useUnistyles } from 'react-native-unistyles'
+import { Image, Text, View } from 'react-native'
+import { StyleSheet, useUnistyles } from 'react-native-unistyles'
 
 import { LanguageToggle } from '@/components/LanguageToggle'
 import { i18n as i18nConfig } from '@/lib/i18n'
+
+import icon from '@/assets/icon.png'
+
+const styles = StyleSheet.create((theme) => ({
+	headerIcon: {
+		height: 32,
+		width: 32,
+	},
+	headerTitle: {
+		alignItems: 'center',
+		flexDirection: 'row',
+		gap: theme.spacing.sm,
+	},
+	headerTitleText: {
+		color: theme.colors.text,
+		fontSize: 20,
+		fontWeight: '700',
+	},
+}))
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -34,7 +54,12 @@ function RootStack() {
 				name="index"
 				options={{
 					headerRight: () => <LanguageToggle />,
-					title: t`☕️ TOLO Trivia`,
+					headerTitle: () => (
+						<View style={styles.headerTitle}>
+							<Image source={icon} style={styles.headerIcon} />
+							<Text style={styles.headerTitleText}>{t`Trivia`}</Text>
+						</View>
+					),
 				}}
 			/>
 			<Stack.Screen
