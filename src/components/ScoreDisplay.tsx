@@ -27,13 +27,13 @@ export function ScoreDisplay({
 	const scoreScale = useSharedValue(0)
 
 	useEffect(() => {
-		scale.value = withSpring(1, { damping: 12 })
+		scale.value = withSpring(1, { damping: 20 })
 		opacity.value = withTiming(1, { duration: 400 })
 		scoreScale.value = withDelay(
 			300,
 			withSequence(
-				withSpring(1.2, { damping: 8 }),
-				withSpring(1, { damping: 10 }),
+				withSpring(1.1, { damping: 15 }),
+				withSpring(1, { damping: 18 }),
 			),
 		)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
