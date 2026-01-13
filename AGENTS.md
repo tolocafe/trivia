@@ -2,6 +2,20 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Agent Hints
+
+> **Quick reminders for AI agents working on this codebase**
+
+- Run `bun lint && bun typecheck` before committing
+- After adding/changing user-facing strings, run `bunx lingui extract && bunx lingui compile`
+- New components go in `src/components/` with `kebab-case.tsx` filename
+- New routes go in `src/app/` following Expo Router conventions
+- Sanity schema changes require `cd studio && bun run deploy` to take effect
+- Use `useQuery(categoryQueryOptions())` pattern, not custom hooks
+- Prefer `Trans` component for JSX, `t` macro for strings in logic
+- Check `src/lib/styles.ts` for existing theme tokens before adding new ones
+- Studio has separate dependencies - run `bun install` from `/studio` if needed
+
 ## Project Overview
 
 TOLO Trivia (trivia.tolo.cafe) is a coffee quiz mobile app built with Expo/React Native. It uses Sanity CMS for content management (categories and questions) and supports iOS, Android, and web platforms.
