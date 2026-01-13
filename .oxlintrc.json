@@ -1,0 +1,65 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"categories": {
+		"correctness": "warn",
+		"nursery": "warn",
+		"pedantic": "off",
+		"restriction": "warn",
+		"style": "warn",
+		"suspicious": "warn"
+	},
+	"globals": {
+		"clearInterval": "readonly",
+		"process": "readonly",
+		"setInterval": "readonly"
+	},
+	"ignorePatterns": [
+		"*.config.js",
+		"*.config.ts",
+		"babel.config.js",
+		"lingui.config.js",
+		"studio/**/*"
+	],
+	"plugins": [
+		"react",
+		"unicorn",
+		"jsx-a11y",
+		"typescript"
+	],
+	"rules": {
+		"consistent-type-definitions": [
+			"warn",
+			"type"
+		],
+		"curly": "off",
+		"explicit-function-return-type": "off",
+		"explicit-module-boundary-types": "off",
+		"filename-case": "off",
+		"func-style": [
+			"warn",
+			"declaration"
+		],
+		"id-length": "off",
+		"jsx-filename-extension": "off",
+		"jsx-props-no-spreading": "off",
+		"max-statements": "off",
+		"no-danger": "off",
+		"no-duplicate-type-constituents": "off",
+		"no-floating-promises": "off",
+		"no-magic-numbers": "off",
+		"no-nested-ternary": "off",
+		"unicorn/no-nested-ternary": "off",
+		"no-non-null-assertion": "off",
+		"no-null": "off",
+		"no-plusplus": "off",
+		"no-ternary": "off",
+		"no-unsafe-type-assertion": "off",
+		"prefer-destructuring": "off",
+		"prefer-number-properties": "off",
+		"promise-function-async": "off",
+		"react-in-jsx-scope": "off",
+		"sort-imports": "off",
+		"sort-keys": "off",
+		"style-prop-object": "off"
+	}
+}

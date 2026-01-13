@@ -2,6 +2,8 @@
 
 # dependencies
 node_modules/
+.playwright-mcp/
+.vscode/
 
 # Expo
 .expo/

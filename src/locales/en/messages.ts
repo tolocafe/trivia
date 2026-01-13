@@ -1,0 +1,17 @@
+export const messages = {
+	AxYwQd: ['No categories yet'],
+	Eq6YVV: ['Score'],
+	GdZBcf: ['Back to Categories'],
+	'Jt7+j+': ['Play Again'],
+	QY9Mv3: ['No questions available'],
+	XmVUbU: ['Accuracy'],
+	'Zf6u+6': ['Explanation'],
+	asKzr8: ['See Results'],
+	'cGn8/W': ['☕️ TOLO Trivia'],
+	fqsEMt: ['Next Question'],
+	sr0UJD: ['Go Back'],
+	t2rBZB: ['Correct'],
+	'tk1Nk/': ['Wrong'],
+	utYGTt: ['Play Now'],
+	w8movG: ['Check back soon for coffee trivia!'],
+}
