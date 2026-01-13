@@ -2,7 +2,7 @@
 
 Guidelines for AI agents working on this codebase.
 
-## Quick Reference
+## Commands
 
 | Task | Command |
 |------|---------|
@@ -13,53 +13,76 @@ Guidelines for AI agents working on this codebase.
 | Lint | `bun lint` |
 | Typecheck | `bun typecheck` |
 | Format | `bun format` |
-| i18n extract | `bunx lingui extract` |
-| i18n compile | `bunx lingui compile` |
-| Studio dev | `cd studio && bun dev` |
-| Studio deploy | `cd studio && bun run deploy` |
+| Typegen | `bun typegen` |
+| i18n | `bunx lingui extract && bunx lingui compile` |
+| Studio | `cd studio && bun dev` |
 
 ## Rules
 
-- **Always run `bun lint && bun typecheck` before committing**
-- Use `bun` and `bunx` only — never `npm`, `yarn`, or `npx`
-- Follow [Conventional Commits](https://www.conventionalcommits.org/): `type(scope): description`
-- No hardcoded strings — use Lingui (`Trans` for JSX, `t` for logic)
-- No inline styles — use Unistyles from `@/lib/styles`
-- No `any` types — strict TypeScript only
-- Imports use `@/` alias, never relative paths
+**Before committing:** `bun lint && bun typecheck`
 
-## Commit Types
+| Don't | Do |
+|-------|-----|
+| `npm`, `yarn`, `npx` | `bun`, `bunx` |
+| Hardcoded strings | Lingui `Trans` / `t` |
+| Inline styles | Unistyles `StyleSheet.create()` |
+| `styles.foo(value)` | `styles.useVariants()` |
+| Hardcoded colors | Theme tokens from `@/lib/tokens.ts` |
+| `any` types | Strict TypeScript |
+| Manual query types | `defineQuery()` + generated types |
+| Relative imports | `@/` alias |
+| `router.push()` | expo-router `Link` |
 
-`feat` | `fix` | `docs` | `style` | `refactor` | `perf` | `test` | `chore` | `ci`
+**Commits:** [Conventional Commits](https://www.conventionalcommits.org/) — `type(scope): description`
 
-```
-feat(quiz): add timer mode
-fix(i18n): correct Spanish translation
-chore(deps): update expo
-```
+Types: `feat` | `fix` | `docs` | `style` | `refactor` | `perf` | `test` | `chore` | `ci`
 
-## Project Structure
+## Architecture
 
 ```
 src/
-├── app/          # Expo Router routes
-├── components/   # React components (kebab-case.tsx, PascalCase exports)
-├── lib/          # Utilities: sanity client, queries, styles, i18n
-└── locales/      # Lingui PO files (en, es)
-studio/           # Sanity Studio (separate package)
+├── app/           # Expo Router routes
+├── components/    # React components
+├── hooks/         # Custom hooks
+├── lib/           # Utilities
+│   ├── queries.ts       # GROQ queries with defineQuery()
+│   ├── query-options.ts # TanStack Query options
+│   ├── sanity.types.ts  # Generated types (do not edit)
+│   ├── tokens.ts        # Design tokens
+│   └── styles.ts        # Theme config
+└── locales/       # i18n (en, es)
+studio/            # Sanity Studio (separate package)
+```
+
+### Data Flow
+
+```
+Sanity CMS → schema (studio/) → queries.ts → typegen → sanity.types.ts
+                                     ↓
+                              query-options.ts → useQuery() → components
 ```
 
 ## Patterns
 
-**Data fetching** — TanStack Query with predefined options:
+### Data Fetching
 ```tsx
 import { useQuery } from '@tanstack/react-query'
 import { categoriesQueryOptions } from '@/lib/query-options'
 
-const { data } = useQuery(categoriesQueryOptions())
+const { data } = useQuery(categoriesQueryOptions(locale))
 ```
 
-**i18n** — Lingui macros:
+### GROQ Queries
+```tsx
+import { defineQuery } from 'groq'
+
+export const MY_QUERY = defineQuery(/* groq */ `
+  *[_type == "post"] { _id, title }
+`)
+// Run `bun typegen` to generate types
+```
+
+### i18n
 ```tsx
 import { Trans } from '@lingui/react/macro'
 import { t } from '@lingui/core/macro'
@@ -68,25 +91,63 @@ import { t } from '@lingui/core/macro'
 const label = t`Play Now`      // strings
 ```
 
-**Styling** — Unistyles:
+### Styling
 ```tsx
 import { StyleSheet } from 'react-native-unistyles'
 
 const styles = StyleSheet.create((theme) => ({
   container: { backgroundColor: theme.colors.background }
 }))
+
+// For dynamic styles, use variants with useVariants()
+const styles = StyleSheet.create((theme) => ({
+  text: {
+    variants: {
+      color: {
+        primary: { color: theme.colors.text },
+        secondary: { color: theme.colors.textSecondary },
+      }
+    }
+  }
+}))
+
+// In component:
+styles.useVariants({ color: 'primary' })
 ```
 
-## Data Flow
+**Prefer `styles.useVariants()`** over calling styles as functions for dynamic values.
 
-1. Content in Sanity CMS → `studio/schemaTypes/`
-2. GROQ queries → `src/lib/queries.ts`
-3. Query options → `src/lib/query-options.ts`
-4. Components consume via `useQuery()`
+### Navigation
+```tsx
+import { Link, type Href } from 'expo-router'
 
-## Reminders
+<Link href="/quiz/coffee">Start</Link>
+<Link href={`/quiz/${id}` as Href} asChild>
+  <Pressable />
+</Link>
+```
 
-- After changing strings: `bunx lingui extract && bunx lingui compile`
-- After schema changes: `cd studio && bun run deploy`
-- Studio has separate deps: run `bun install` from `/studio` if needed
-- Check `src/lib/styles.ts` for existing theme tokens
+## Workflows
+
+**After changing UI strings:**
+```sh
+bunx lingui extract && bunx lingui compile
+```
+
+**After changing queries or Sanity schema:**
+```sh
+bun typegen
+```
+
+**After changing Sanity schema (deploy):**
+```sh
+cd studio && bun run deploy
+```
+
+## Key Files
+
+- `src/lib/tokens.ts` — colors, spacing, radius, typography
+- `src/lib/styles.ts` — theme configuration
+- `src/lib/queries.ts` — all GROQ queries
+- `src/lib/sanity.types.ts` — generated types (do not edit manually)
+- `studio/schemaTypes/` — Sanity schema definitions

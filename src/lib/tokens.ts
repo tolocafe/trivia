@@ -1,5 +1,5 @@
+// Base palette
 export const colors = {
-	// Base palette
 	white: '#FFFFFF',
 	black: '#000000',
 
@@ -17,7 +17,7 @@ export const colors = {
 	teal: '#00C9A7',
 	yellow: '#FFD93D',
 
-	// Light theme
+	// Light theme semantic
 	light: {
 		background: '#FAFAFA',
 		border: '#E2E8F0',
@@ -26,7 +26,7 @@ export const colors = {
 		textSecondary: '#64748B',
 	},
 
-	// Dark theme
+	// Dark theme semantic
 	dark: {
 		background: '#0F0F1A',
 		border: '#2D2D44',
@@ -35,6 +35,13 @@ export const colors = {
 		textSecondary: '#94A3B8',
 	},
 } as const
+
+export const answerColors = [
+	colors.red,
+	colors.blue,
+	colors.yellow,
+	colors.green,
+] as const
 
 export const radius = {
 	sm: 8,
@@ -54,28 +61,33 @@ export const spacing = {
 	screenPadding: 20,
 } as const
 
+// Font weights: 400 (regular), 600 (semibold), 700 (bold)
+// Font sizes: 16, 20, 24, 32 (+ 72 for display)
 export const typography = {
 	body: {
 		fontSize: 16,
 		fontWeight: '400' as const,
 	},
-	button: {
-		fontSize: 18,
-		fontWeight: '700' as const,
-		letterSpacing: 0.5,
+	bodySemibold: {
+		fontSize: 16,
+		fontWeight: '600' as const,
 	},
-	caption: {
-		fontSize: 14,
-		fontWeight: '500' as const,
+	button: {
+		fontSize: 20,
+		fontWeight: '700' as const,
+	},
+	display: {
+		fontSize: 72,
+		fontWeight: '700' as const,
+		letterSpacing: -2,
 	},
 	heading: {
 		fontSize: 24,
 		fontWeight: '700' as const,
-		letterSpacing: -0.3,
 	},
 	title: {
 		fontSize: 32,
-		fontWeight: '800' as const,
+		fontWeight: '700' as const,
 		letterSpacing: -0.5,
 	},
 } as const

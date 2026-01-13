@@ -81,7 +81,7 @@ const styles = StyleSheet.create((theme) => ({
 	},
 	playAgainText: {
 		...theme.typography.button,
-		color: '#FFFFFF',
+		color: theme.colors.white,
 	},
 	homeButton: {
 		backgroundColor: theme.colors.surface,

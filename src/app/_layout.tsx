@@ -8,6 +8,7 @@ import { StyleSheet, useUnistyles } from 'react-native-unistyles'
 
 import { LanguageToggle } from '@/components/LanguageToggle'
 import { i18n as i18nConfig } from '@/lib/i18n'
+import { typography } from '@/lib/tokens'
 
 import icon from '@/assets/icon.png'
 
@@ -22,9 +23,8 @@ const styles = StyleSheet.create((theme) => ({
 		gap: theme.spacing.sm,
 	},
 	headerTitleText: {
+		...theme.typography.button,
 		color: theme.colors.text,
-		fontSize: 20,
-		fontWeight: '700',
 	},
 }))
 
@@ -44,9 +44,8 @@ function RootStack() {
 				headerStyle: { backgroundColor: theme.colors.background },
 				headerTintColor: theme.colors.text,
 				headerTitleStyle: {
+					...typography.button,
 					color: theme.colors.text,
-					fontSize: 20,
-					fontWeight: '700',
 				},
 			}}
 		>

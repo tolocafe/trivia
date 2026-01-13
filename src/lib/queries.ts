@@ -1,120 +1,92 @@
+import { defineQuery } from 'groq'
+
 import { sanityClient } from '@/lib/sanity'
+import type { Locale } from '@/lib/i18n'
+import type {
+	CATEGORIES_QUERYResult,
+	SUBCATEGORIES_QUERYResult,
+	QUESTIONS_BY_CATEGORY_QUERYResult,
+} from '@/lib/sanity.types'
 
-export type Category = {
-	_id: string
-	color?: string
-	description?: string
-	icon?: string
-	image?: {
-		asset: {
-			_id: string
-			url: string
-		}
+// Re-export types for backwards compatibility
+export type Category = CATEGORIES_QUERYResult[number]
+export type Subcategory = SUBCATEGORIES_QUERYResult[number]
+export type Question = QUESTIONS_BY_CATEGORY_QUERYResult[number]
+export type Answer = Question['answers'][number]
+
+export const CATEGORIES_QUERY = defineQuery(/* groq */ `
+	*[_type == "category" && !defined(parent)] | order(order asc) {
+		_id,
+		"title": coalesce(title[_key == $locale][0].value, title[_key == "en"][0].value),
+		"slug": slug.current,
+		"description": coalesce(description[_key == $locale][0].value, description[_key == "en"][0].value),
+		color,
+		icon,
+		image {
+			asset-> {
+				_id,
+				url
+			}
+		},
+		order
 	}
-	order: number
-	parent?: { _id: string; title: string }
-	slug: { current: string }
-	title: string
-}
+`)
 
-export type Answer = {
-	_key: string
-	text: string
-}
-
-export type Question = {
-	_id: string
-	answers: Answer[]
-	category: { _id: string; title: string }
-	correctAnswerIndex: number
-	difficulty: 'foundation' | 'intermediate' | 'professional'
-	explanation?: string
-	image?: {
-		asset: {
-			_id: string
-			url: string
-		}
+export const SUBCATEGORIES_QUERY = defineQuery(/* groq */ `
+	*[_type == "category" && parent._ref == $parentId] | order(order asc) {
+		_id,
+		"title": coalesce(title[_key == $locale][0].value, title[_key == "en"][0].value),
+		"slug": slug.current,
+		"description": coalesce(description[_key == $locale][0].value, description[_key == "en"][0].value),
+		parent-> {
+			_id,
+			"title": coalesce(title[_key == $locale][0].value, title[_key == "en"][0].value)
+		},
+		color,
+		icon,
+		image {
+			asset-> {
+				_id,
+				url
+			}
+		},
+		order
 	}
-	text: string
-	timeLimit: number
+`)
+
+export const QUESTIONS_BY_CATEGORY_QUERY = defineQuery(/* groq */ `
+	*[_type == "question" && category._ref == $categoryId] {
+		_id,
+		"text": coalesce(text[_key == $locale][0].value, text[_key == "en"][0].value),
+		category-> {
+			_id,
+			"title": coalesce(title[_key == $locale][0].value, title[_key == "en"][0].value)
+		},
+		"answers": answers[] {
+			_key,
+			"text": coalesce(text[_key == $locale][0].value, text[_key == "en"][0].value)
+		},
+		correctAnswerIndex,
+		difficulty,
+		"explanation": coalesce(explanation[_key == $locale][0].value, explanation[_key == "en"][0].value),
+		image {
+			asset-> {
+				_id,
+				url
+			}
+		},
+		timeLimit
+	}
+`)
+
+export async function getCategories(locale: Locale) {
+	return sanityClient.fetch(CATEGORIES_QUERY, { locale })
 }
 
-export async function getCategories(): Promise<Category[]> {
-	return sanityClient.fetch(`
-    *[_type == "category" && !defined(parent)] | order(order asc) {
-      _id,
-      title,
-      "slug": slug.current,
-      description,
-      color,
-      icon,
-      image {
-        asset-> {
-          _id,
-          url
-        }
-      },
-      order
-    }
-  `)
+export async function getSubcategories(parentId: string, locale: Locale) {
+	return sanityClient.fetch(SUBCATEGORIES_QUERY, { parentId, locale })
 }
 
-export async function getSubcategories(parentId: string): Promise<Category[]> {
-	return sanityClient.fetch(
-		`
-    *[_type == "category" && parent._ref == $parentId] | order(order asc) {
-      _id,
-      title,
-      "slug": slug.current,
-      description,
-      parent-> {
-        _id,
-        title
-      },
-      color,
-      icon,
-      image {
-        asset-> {
-          _id,
-          url
-        }
-      },
-      order
-    }
-  `,
-		{ parentId },
-	)
+export async function getQuestionsByCategory(categoryId: string, locale: Locale) {
+	return sanityClient.fetch(QUESTIONS_BY_CATEGORY_QUERY, { categoryId, locale })
 }
-
-export async function getQuestionsByCategory(
-	categoryId: string,
-): Promise<Question[]> {
-	return sanityClient.fetch(
-		`
-    *[_type == "question" && category._ref == $categoryId] {
-      _id,
-      text,
-      category-> {
-        _id,
-        title
-      },
-      answers[] {
-        _key,
-        text
-      },
-      correctAnswerIndex,
-      difficulty,
-      explanation,
-      image {
-        asset-> {
-          _id,
-          url
-        }
-      },
-      timeLimit
-    }
-  `,
-		{ categoryId },
-	)
-}
-

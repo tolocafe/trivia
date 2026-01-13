@@ -1,10 +1,10 @@
 import { Image } from 'expo-image'
 import { Text, View } from 'react-native'
-import { StyleSheet, useUnistyles } from 'react-native-unistyles'
+import { StyleSheet } from 'react-native-unistyles'
 
 type QuestionCardProps = {
-	imageUrl?: string
-	text: string
+	imageUrl?: string | null
+	text: string | null
 	timeRemaining: number
 }
 
@@ -13,20 +13,16 @@ export function QuestionCard({
 	imageUrl,
 	timeRemaining,
 }: QuestionCardProps) {
-	const { theme } = useUnistyles()
+	const timerStatus =
+		timeRemaining <= 5 ? 'critical' : timeRemaining <= 10 ? 'warning' : 'normal'
 
-	const timerColor =
-		timeRemaining <= 5
-			? theme.colors.red
-			: timeRemaining <= 10
-				? theme.colors.yellow
-				: theme.colors.teal
+	styles.useVariants({ timerStatus })
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
 				<View style={styles.timerContainer}>
-					<Text style={styles.timerText(timerColor)}>{timeRemaining}</Text>
+					<Text style={styles.timerText}>{timeRemaining}</Text>
 				</View>
 			</View>
 
@@ -78,8 +74,14 @@ const styles = StyleSheet.create((theme) => ({
 		justifyContent: 'center',
 		width: 48,
 	},
-	timerText: (color: string) => ({
+	timerText: {
 		...theme.typography.heading,
-		color,
-	}),
+		variants: {
+			timerStatus: {
+				normal: { color: theme.colors.teal },
+				warning: { color: theme.colors.yellow },
+				critical: { color: theme.colors.red },
+			},
+		},
+	},
 }))

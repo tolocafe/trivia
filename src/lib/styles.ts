@@ -1,42 +1,19 @@
 import { StyleSheet } from 'react-native-unistyles'
 
-import { colors, radius, spacing, typography } from '@/lib/tokens'
+import { answerColors, colors, radius, spacing, typography } from '@/lib/tokens'
 
-const gameColors = {
-	blue: colors.blue,
-	coffee: colors.coffee,
-	cream: colors.cream,
-	espresso: colors.espresso,
-	green: colors.green,
-	latte: colors.latte,
-	orange: colors.orange,
-	pink: colors.pink,
-	purple: colors.purple,
-	red: colors.red,
-	teal: colors.teal,
-	yellow: colors.yellow,
-} as const
-
-export const answerColors = [
-	gameColors.red,
-	gameColors.blue,
-	gameColors.yellow,
-	gameColors.green,
-] as const
+export { answerColors }
 
 const lightTheme = {
 	colors: {
-		...gameColors,
+		...colors,
 		background: colors.light.background,
 		border: colors.light.border,
 		surface: colors.light.surface,
 		text: colors.light.text,
 		textSecondary: colors.light.textSecondary,
-		white: colors.white,
 	},
-	// oxlint-disable-next-line sort-keys
 	radius,
-	// oxlint-disable-next-line sort-keys
 	spacing,
 	typography,
 } as const

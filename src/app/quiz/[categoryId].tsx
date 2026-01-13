@@ -24,6 +24,7 @@ import {
 import { AnswerButton } from '@/components/AnswerButton'
 import { ProgressBar } from '@/components/ProgressBar'
 import { QuestionCard } from '@/components/QuestionCard'
+import { useLocale } from '@/hooks/use-locale'
 import { questionsQueryOptions } from '@/lib/query-options'
 
 const POINTS_BASE = 100
@@ -43,11 +44,12 @@ const UniAnimatedView = withUnistyles(Animated.View)
 
 export default function QuizScreen() {
   const { theme } = useUnistyles()
+  const locale = useLocale()
   const insets = UnistylesRuntime.insets
   const { categoryId } = useLocalSearchParams<{ categoryId: string }>()
 
   const { data: allQuestions, isLoading } = useQuery(
-    questionsQueryOptions(categoryId ?? ''),
+    questionsQueryOptions(categoryId ?? '', locale),
   )
 
   const quizQuestions = useMemo(() => {
@@ -274,7 +276,7 @@ const styles = StyleSheet.create((theme, runtime) => ({
   },
   backButtonText: {
     ...theme.typography.button,
-    color: '#FFFFFF',
+    color: theme.colors.white,
   },
   header: {
     flexDirection: 'row',
@@ -328,7 +330,7 @@ const styles = StyleSheet.create((theme, runtime) => ({
     borderLeftColor: theme.colors.teal,
   },
   explanationLabel: {
-    ...theme.typography.caption,
+    ...theme.typography.body,
     color: theme.colors.teal,
     marginBottom: theme.spacing.sm,
     textTransform: 'uppercase',
@@ -354,6 +356,6 @@ const styles = StyleSheet.create((theme, runtime) => ({
   },
   nextButtonText: {
     ...theme.typography.button,
-    color: '#FFFFFF',
+    color: theme.colors.white,
   },
 }))

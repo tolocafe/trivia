@@ -7,12 +7,12 @@ import Animated, {
 	withSpring,
 	withTiming,
 } from 'react-native-reanimated'
-import { StyleSheet, useUnistyles } from 'react-native-unistyles'
+import { StyleSheet } from 'react-native-unistyles'
 
-import { answerColors } from '@/lib/styles'
+import { answerColors } from '@/lib/tokens'
 
 type AnswerButtonProps = {
-	text: string
+	text: string | null
 	index: number
 	onPress: () => void
 	disabled?: boolean
@@ -25,6 +25,26 @@ const labels = ['A', 'B', 'C', 'D']
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 
+type AnswerState = 'answer0' | 'answer1' | 'answer2' | 'answer3' | 'correct' | 'incorrect' | 'dimmed'
+
+function getAnswerState(params: {
+	index: number
+	showResult: boolean
+	isCorrect: boolean
+	isSelected: boolean
+}): AnswerState {
+	if (!params.showResult) {
+		return `answer${params.index}` as AnswerState
+	}
+	if (params.isCorrect) {
+		return 'correct'
+	}
+	if (params.isSelected) {
+		return 'incorrect'
+	}
+	return 'dimmed'
+}
+
 export function AnswerButton({
 	text,
 	index,
@@ -34,9 +54,11 @@ export function AnswerButton({
 	isSelected = false,
 	showResult = false,
 }: AnswerButtonProps) {
-	const { theme } = useUnistyles()
 	const scale = useSharedValue(1)
 	const opacity = useSharedValue(1)
+
+	const answerState = getAnswerState({ index, showResult, isCorrect, isSelected })
+	styles.useVariants({ answerState })
 
 	useEffect(() => {
 		if (showResult) {
@@ -60,24 +82,11 @@ export function AnswerButton({
 		opacity: opacity.value,
 	}))
 
-	function getBackgroundColor() {
-		if (!showResult) {
-			return answerColors[index]
-		}
-		if (isCorrect) {
-			return theme.colors.green
-		}
-		if (isSelected) {
-			return theme.colors.red
-		}
-		return theme.colors.textSecondary
-	}
-
 	return (
 		<AnimatedPressable
 			onPress={onPress}
 			disabled={disabled}
-			style={[styles.container(getBackgroundColor()), animatedStyle]}
+			style={[styles.container, animatedStyle]}
 		>
 			<View style={styles.label}>
 				<Text style={styles.labelText}>{labels[index]}</Text>
@@ -94,14 +103,24 @@ export function AnswerButton({
 }
 
 const styles = StyleSheet.create((theme) => ({
-	container: (backgroundColor: string) => ({
-		backgroundColor,
+	container: {
 		borderRadius: theme.radius.md,
 		padding: theme.spacing.md,
 		flexDirection: 'row',
 		alignItems: 'center',
 		minHeight: 64,
-	}),
+		variants: {
+			answerState: {
+				answer0: { backgroundColor: answerColors[0] },
+				answer1: { backgroundColor: answerColors[1] },
+				answer2: { backgroundColor: answerColors[2] },
+				answer3: { backgroundColor: answerColors[3] },
+				correct: { backgroundColor: theme.colors.green },
+				incorrect: { backgroundColor: theme.colors.red },
+				dimmed: { backgroundColor: theme.colors.textSecondary },
+			},
+		},
+	},
 	label: {
 		width: 36,
 		height: 36,
@@ -113,17 +132,16 @@ const styles = StyleSheet.create((theme) => ({
 	},
 	labelText: {
 		...theme.typography.button,
-		color: '#FFFFFF',
+		color: theme.colors.white,
 	},
 	text: {
-		...theme.typography.body,
-		color: '#FFFFFF',
+		...theme.typography.bodySemibold,
+		color: theme.colors.white,
 		flex: 1,
-		fontWeight: '600',
 	},
 	checkmark: {
 		fontSize: 24,
-		color: '#FFFFFF',
+		color: theme.colors.white,
 		marginLeft: theme.spacing.sm,
 	},
 }))

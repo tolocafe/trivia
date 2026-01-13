@@ -1,9 +1,11 @@
-import {ScrollViewStyleReset} from 'expo-router/html'
-import type {PropsWithChildren} from 'react'
+import { ScrollViewStyleReset } from 'expo-router/html'
+import type { PropsWithChildren } from 'react'
+
+import { colors } from '@/lib/tokens'
 
 import '../lib/styles'
 
-export default function Root({children}: PropsWithChildren) {
+export default function Root({ children }: PropsWithChildren) {
   return (
     <html lang="en">
       <head>
@@ -11,7 +13,7 @@ export default function Root({children}: PropsWithChildren) {
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <ScrollViewStyleReset />
-        <style dangerouslySetInnerHTML={{__html: responsiveBackground}} />
+        <style dangerouslySetInnerHTML={{ __html: responsiveBackground }} />
       </head>
       <body>{children}</body>
     </html>
@@ -20,11 +22,11 @@ export default function Root({children}: PropsWithChildren) {
 
 const responsiveBackground = `
 body {
-  background-color: #fafafa;
+  background-color: ${colors.light.background};
 }
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: #0f0f1a;
+    background-color: ${colors.dark.background};
   }
 }
 `

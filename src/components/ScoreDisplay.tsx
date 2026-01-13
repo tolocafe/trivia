@@ -123,16 +123,14 @@ const styles = StyleSheet.create((theme) => ({
 		marginBottom: theme.spacing.md,
 	},
 	scoreLabel: {
-		...theme.typography.caption,
+		...theme.typography.body,
 		color: theme.colors.textSecondary,
 		textTransform: 'uppercase',
 		letterSpacing: 2,
 	},
 	scoreValue: {
-		fontSize: 72,
-		fontWeight: '800',
+		...theme.typography.display,
 		color: theme.colors.purple,
-		letterSpacing: -2,
 	},
 	message: {
 		...theme.typography.heading,
@@ -156,7 +154,7 @@ const styles = StyleSheet.create((theme) => ({
 		color: theme.colors.text,
 	},
 	statLabel: {
-		...theme.typography.caption,
+		...theme.typography.body,
 		color: theme.colors.textSecondary,
 		marginTop: theme.spacing.xs,
 	},

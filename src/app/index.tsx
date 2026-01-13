@@ -1,18 +1,13 @@
 import { Trans } from '@lingui/react/macro'
 import { useQuery } from '@tanstack/react-query'
-import { router } from 'expo-router'
+import { Link, type Href } from 'expo-router'
 import { useState } from 'react'
-import {
-	ActivityIndicator,
-	FlatList,
-	Pressable,
-	Text,
-	View,
-} from 'react-native'
+import { ActivityIndicator, FlatList, Text, View } from 'react-native'
 import Animated, { FadeIn, FadeOut, Layout } from 'react-native-reanimated'
 import { StyleSheet, useUnistyles } from 'react-native-unistyles'
 
 import { CategoryCard } from '@/components/CategoryCard'
+import { useLocale } from '@/hooks/use-locale'
 import {
 	categoriesQueryOptions,
 	subcategoriesQueryOptions,
@@ -20,14 +15,17 @@ import {
 
 export default function CategoriesScreen() {
 	const { theme } = useUnistyles()
+	const locale = useLocale()
 	const [expandedCategoryId, setExpandedCategoryId] = useState<string | null>(
 		null,
 	)
 
-	const { data: categories, isLoading } = useQuery(categoriesQueryOptions)
+	const { data: categories, isLoading } = useQuery(
+		categoriesQueryOptions(locale),
+	)
 
 	const { data: subcategories, isLoading: subcategoriesLoading } = useQuery(
-		subcategoriesQueryOptions(expandedCategoryId ?? ''),
+		subcategoriesQueryOptions(expandedCategoryId ?? '', locale),
 	)
 
 	function handleCategoryPress(categoryId: string) {
@@ -36,10 +34,6 @@ export default function CategoriesScreen() {
 		} else {
 			setExpandedCategoryId(categoryId)
 		}
-	}
-
-	function handleSubcategoryPress(subcategoryId: string) {
-		router.push(`/quiz/${subcategoryId}`)
 	}
 
 	if (isLoading) {
@@ -85,21 +79,23 @@ export default function CategoriesScreen() {
 											key={sub._id}
 											category={sub}
 											isSubcategory
-											onPress={() => handleSubcategoryPress(sub._id)}
+											href={`/quiz/${sub._id}` as Href}
 										/>
 									))
 								) : (
-									<Pressable
-										style={styles.playNowButton(
-											item.color ?? theme.colors.purple,
-										)}
-										onPress={() => handleSubcategoryPress(item._id)}
-									>
-										<Text style={styles.playNowText}>
-											<Trans>Play Now</Trans>
-										</Text>
-										<Text style={styles.playNowIcon}>→</Text>
-									</Pressable>
+									<Link href={`/quiz/${item._id}` as Href}>
+										<View
+											style={[
+												styles.playNowButton,
+												{ backgroundColor: item.color ?? theme.colors.purple },
+											]}
+										>
+											<Text style={styles.playNowText}>
+												<Trans>Play Now</Trans>
+											</Text>
+											<Text style={styles.playNowIcon}>→</Text>
+										</View>
+									</Link>
 								)}
 							</Animated.View>
 						)}
@@ -167,21 +163,18 @@ const styles = StyleSheet.create((theme) => ({
 	subcategoryLoader: {
 		padding: theme.spacing.lg,
 	},
-	playNowButton: (color: string) => ({
-		backgroundColor: color,
+	playNowButton: {
 		borderRadius: theme.radius.md,
 		padding: theme.spacing.md,
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-between',
-	}),
+		width: '100%',
+	},
 	playNowText: {
 		...theme.typography.button,
-		color: '#FFFFFF',
+		color: theme.colors.white,
 	},
 	playNowIcon: {
 		fontSize: 24,
-		color: '#FFFFFF',
+		color: theme.colors.white,
 	},
 	emptyContainer: {
 		alignItems: 'center',

@@ -31,6 +31,7 @@
 			"warn",
 			"type"
 		],
+		"capitalized-comments": "off",
 		"curly": "off",
 		"explicit-function-return-type": "off",
 		"explicit-module-boundary-types": "off",

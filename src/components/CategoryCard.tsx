@@ -1,4 +1,4 @@
-import { Image } from 'expo-image'
+import { Link, type Href } from 'expo-router'
 import { Pressable, Text, View } from 'react-native'
 import { StyleSheet, useUnistyles } from 'react-native-unistyles'
 
@@ -7,63 +7,82 @@ import type { Category } from '@/lib/queries'
 type CategoryCardProps = {
 	category: Category
 	isSubcategory?: boolean
-	onPress: () => void
-}
+} & ({ href: Href; onPress?: never } | { href?: never; onPress: () => void })
 
 export function CategoryCard({
 	category,
 	onPress,
+	href,
 	isSubcategory = false,
 }: CategoryCardProps) {
 	const { theme } = useUnistyles()
 
+	styles.useVariants({ isSubcategory })
+
+	const content = (
+		<>
+			{category.icon ? <Text style={styles.icon}>{category.icon}</Text> : null}
+			<Text style={styles.title} numberOfLines={2}>
+				{category.title}
+			</Text>
+			{category.description && !isSubcategory && (
+				<Text style={styles.description} numberOfLines={2}>
+					{category.description}
+				</Text>
+			)}
+		</>
+	)
+
+	if (href) {
+		return (
+			<Link href={href} style={{ width: '100%' }}>
+				<View
+					style={[
+						styles.container,
+						{ backgroundColor: category.color ?? theme.colors.purple },
+					]}
+				>
+					{content}
+				</View>
+			</Link>
+		)
+	}
+
 	return (
 		<Pressable
 			onPress={onPress}
-			style={({ pressed }) => [
-				styles.container(category.color ?? theme.colors.purple, isSubcategory),
-				pressed && styles.pressed,
+			style={(state) => [
+				styles.container,
+				{ backgroundColor: category.color ?? theme.colors.purple },
+				state.pressed && styles.pressed,
 			]}
 		>
-			<View style={styles.content}>
-				{category.icon && <Text style={styles.icon}>{category.icon}</Text>}
-				<Text style={styles.title} numberOfLines={2}>
-					{category.title}
-				</Text>
-				{category.description && !isSubcategory && (
-					<Text style={styles.description} numberOfLines={2}>
-						{category.description}
-					</Text>
-				)}
-			</View>
-			{category.image?.asset?.url && (
-				<Image
-					source={{ uri: category.image.asset.url }}
-					style={styles.image}
-					contentFit="cover"
-					transition={200}
-				/>
-			)}
+			{content}
 		</Pressable>
 	)
 }
 
 const styles = StyleSheet.create((theme) => ({
-	container: (color: string, isSubcategory: boolean) => ({
-		backgroundColor: color,
-		borderRadius: isSubcategory ? theme.radius.md : theme.radius.lg,
-		padding: isSubcategory ? theme.spacing.md : theme.spacing.lg,
-		minHeight: isSubcategory ? 80 : 140,
+	container: {
+		width: '100%',
+		borderRadius: theme.radius.lg,
+		padding: theme.spacing.lg,
 		overflow: 'hidden',
-		position: 'relative',
-	}),
+		backgroundColor: theme.colors.purple,
+		minHeight: 140,
+		variants: {
+			isSubcategory: {
+				true: {
+					borderRadius: theme.radius.md,
+					padding: theme.spacing.md,
+					minHeight: 80,
+				},
+			},
+		},
+	},
 	pressed: {
 		opacity: 0.9,
 		transform: [{ scale: 0.98 }],
-	},
-	content: {
-		flex: 1,
-		zIndex: 1,
 	},
 	icon: {
 		fontSize: 32,
@@ -71,20 +90,11 @@ const styles = StyleSheet.create((theme) => ({
 	},
 	title: {
 		...theme.typography.heading,
-		color: '#FFFFFF',
+		color: theme.colors.white,
 	},
 	description: {
-		...theme.typography.caption,
+		...theme.typography.body,
 		color: 'rgba(255,255,255,0.9)',
 		marginTop: theme.spacing.xs,
-	},
-	image: {
-		position: 'absolute',
-		right: -20,
-		bottom: -20,
-		width: 120,
-		height: 120,
-		opacity: 0.3,
-		borderRadius: theme.radius.lg,
 	},
 }))
