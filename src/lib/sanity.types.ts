@@ -33,14 +33,14 @@ export type Question = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  text?: InternationalizedArrayText;
-  category?: CategoryReference;
-  answers?: Array<{
-    text?: InternationalizedArrayString;
+  text: InternationalizedArrayText;
+  category: CategoryReference;
+  answers: Array<{
+    text: InternationalizedArrayString;
     _type: "answer";
     _key: string;
   }>;
-  correctAnswerIndex?: number;
+  correctAnswerIndex: number;
   explanation?: InternationalizedArrayText;
   image?: {
     asset?: SanityImageAssetReference;
@@ -53,18 +53,18 @@ export type Question = {
 
 export type SanityImageCrop = {
   _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
 };
 
 export type SanityImageHotspot = {
   _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
+  x: number;
+  y: number;
+  height: number;
+  width: number;
 };
 
 export type InternationalizedArrayText = Array<{
@@ -81,8 +81,8 @@ export type Category = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  title?: InternationalizedArrayString;
-  slug?: Slug;
+  title: InternationalizedArrayString;
+  slug: Slug;
   description?: InternationalizedArrayText;
   parent?: CategoryReference;
   color?: string;
@@ -100,7 +100,7 @@ export type Category = {
 
 export type Slug = {
   _type: "slug";
-  current?: string;
+  current: string;
   source?: string;
 };
 
@@ -135,9 +135,9 @@ export type SanityImagePalette = {
 
 export type SanityImageDimensions = {
   _type: "sanity.imageDimensions";
-  height?: number;
-  width?: number;
-  aspectRatio?: number;
+  height: number;
+  width: number;
+  aspectRatio: number;
 };
 
 export type SanityImageMetadata = {
@@ -147,6 +147,7 @@ export type SanityImageMetadata = {
   palette?: SanityImagePalette;
   lqip?: string;
   blurHash?: string;
+  thumbHash?: string;
   hasAlpha?: boolean;
   isOpaque?: boolean;
 };
@@ -218,7 +219,7 @@ export declare const internalGroqTypeReferenceTo: unique symbol;
 export type CATEGORIES_QUERYResult = Array<{
   _id: string;
   title: string | null;
-  slug: string | null;
+  slug: string;
   description: string | null;
   color: string | null;
   icon: string | null;
@@ -235,7 +236,7 @@ export type CATEGORIES_QUERYResult = Array<{
 export type SUBCATEGORIES_QUERYResult = Array<{
   _id: string;
   title: string | null;
-  slug: string | null;
+  slug: string;
   description: string | null;
   parent: {
     _id: string;
@@ -260,12 +261,12 @@ export type QUESTIONS_BY_CATEGORY_QUERYResult = Array<{
     _id: string;
     title: string | null;
     timeLimit: number | null;
-  } | null;
+  };
   answers: Array<{
     _key: string;
     text: string | null;
-  }> | null;
-  correctAnswerIndex: number | null;
+  }>;
+  correctAnswerIndex: number;
   explanation: string | null;
   image: {
     asset: {
@@ -274,6 +275,9 @@ export type QUESTIONS_BY_CATEGORY_QUERYResult = Array<{
     } | null;
   } | null;
 }>;
+// Variable: ALL_CATEGORY_IDS_QUERY
+// Query: *[_type == "category"]._id
+export type ALL_CATEGORY_IDS_QUERYResult = Array<string>;
 
 // Query TypeMap
 import "@sanity/client";
@@ -282,5 +286,6 @@ declare module "@sanity/client" {
     "\n\t*[_type == \"category\" && !defined(parent)] | order(order asc) {\n\t\t_id,\n\t\t\"title\": coalesce(title[_key == $locale][0].value, title[_key == \"en\"][0].value),\n\t\t\"slug\": slug.current,\n\t\t\"description\": coalesce(description[_key == $locale][0].value, description[_key == \"en\"][0].value),\n\t\tcolor,\n\t\ticon,\n\t\timage {\n\t\t\tasset-> {\n\t\t\t\t_id,\n\t\t\t\turl\n\t\t\t}\n\t\t},\n\t\torder\n\t}\n": CATEGORIES_QUERYResult;
     "\n\t*[_type == \"category\" && parent._ref == $parentId] | order(order asc) {\n\t\t_id,\n\t\t\"title\": coalesce(title[_key == $locale][0].value, title[_key == \"en\"][0].value),\n\t\t\"slug\": slug.current,\n\t\t\"description\": coalesce(description[_key == $locale][0].value, description[_key == \"en\"][0].value),\n\t\tparent-> {\n\t\t\t_id,\n\t\t\t\"title\": coalesce(title[_key == $locale][0].value, title[_key == \"en\"][0].value)\n\t\t},\n\t\tcolor,\n\t\ticon,\n\t\timage {\n\t\t\tasset-> {\n\t\t\t\t_id,\n\t\t\t\turl\n\t\t\t}\n\t\t},\n\t\torder\n\t}\n": SUBCATEGORIES_QUERYResult;
     "\n\t*[_type == \"question\" && category._ref == $categoryId] {\n\t\t_id,\n\t\t\"text\": coalesce(text[_key == $locale][0].value, text[_key == \"en\"][0].value),\n\t\tcategory-> {\n\t\t\t_id,\n\t\t\t\"title\": coalesce(title[_key == $locale][0].value, title[_key == \"en\"][0].value),\n\t\t\ttimeLimit\n\t\t},\n\t\t\"answers\": answers[] {\n\t\t\t_key,\n\t\t\t\"text\": coalesce(text[_key == $locale][0].value, text[_key == \"en\"][0].value)\n\t\t},\n\t\tcorrectAnswerIndex,\n\t\t\"explanation\": coalesce(explanation[_key == $locale][0].value, explanation[_key == \"en\"][0].value),\n\t\timage {\n\t\t\tasset-> {\n\t\t\t\t_id,\n\t\t\t\turl\n\t\t\t}\n\t\t}\n\t}\n": QUESTIONS_BY_CATEGORY_QUERYResult;
+    "\n\t*[_type == \"category\"]._id\n": ALL_CATEGORY_IDS_QUERYResult;
   }
 }

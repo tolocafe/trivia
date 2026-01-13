@@ -89,3 +89,12 @@ export async function getSubcategories(parentId: string, locale: Locale) {
 export async function getQuestionsByCategory(categoryId: string, locale: Locale) {
 	return sanityClient.fetch(QUESTIONS_BY_CATEGORY_QUERY, { categoryId, locale })
 }
+
+// For static generation - get all category IDs
+export const ALL_CATEGORY_IDS_QUERY = defineQuery(/* groq */ `
+	*[_type == "category"]._id
+`)
+
+export async function getAllCategoryIds() {
+	return sanityClient.fetch(ALL_CATEGORY_IDS_QUERY)
+}

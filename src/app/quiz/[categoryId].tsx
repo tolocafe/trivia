@@ -25,7 +25,13 @@ import { AnswerButton } from '@/components/AnswerButton'
 import { ProgressBar } from '@/components/ProgressBar'
 import { QuestionCard } from '@/components/QuestionCard'
 import { useLocale } from '@/hooks/use-locale'
+import { getAllCategoryIds } from '@/lib/queries'
 import { questionsQueryOptions } from '@/lib/query-options'
+
+export async function generateStaticParams() {
+  const categoryIds = await getAllCategoryIds()
+  return categoryIds.map((categoryId) => ({ categoryId }))
+}
 
 const POINTS_BASE = 100
 const POINTS_TIME_BONUS = 10
