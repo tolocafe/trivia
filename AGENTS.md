@@ -1,165 +1,61 @@
 # AGENTS.md
 
-Guidelines for AI agents working on this codebase.
+TOLO Trivia: coffee quiz app (Expo Router, React Native + web) with content in Sanity CMS. Locales `en`, `es`.
 
-## Project Info
+## Project facts
 
-| Key | Value |
-|-----|-------|
-| Sanity Project ID | `uen7ijyc` |
-| Dataset | `production` |
-| Studio URL | https://tolo-trivia.sanity.studio |
-| Supported Locales | `en`, `es` |
-| Web Hosting | Cloudflare Pages (auto-deploys on push to `main`) |
-
-> Sanity data is publicly accessible (read-only via CORS). No API tokens needed for queries.
+- Sanity project `uen7ijyc`, dataset `production`, Studio at https://tolo-trivia.sanity.studio. Data is public read-only via CDN; no API token needed for queries.
+- Web: static export (`app.json` `web.output: "static"`) served as Cloudflare Workers static assets from `dist/` (`wrangler.json`). Cloudflare Workers Builds deploys on every push to `main`; its `Workers Builds: tolo-trivia` check is the only CI. There is no branch protection, so merging to `main` ships production web.
+- `studio/` is a separate package with its own `bun.lock` and `sanity` v5; the root uses `sanity` v3 only for typegen. Run `bun install` in both.
 
 ## Commands
 
-| Task | Command |
-|------|---------|
-| Dev server | `bun start` |
-| iOS | `bun ios` |
-| Android | `bun android` |
-| Web | `bun web` |
-| Lint | `bun lint` |
-| Typecheck | `bun typecheck` |
-| Format | `bun format` |
-| Typegen | `bun typegen` |
-| i18n | `bunx lingui extract && bunx lingui compile` |
-| Studio | `cd studio && bun dev` |
+Package manager is bun. Use `bun` / `bunx`, never `npm`, `yarn`, `npx`.
 
-## Rules
+| Task                    | Command                                             |
+| ----------------------- | --------------------------------------------------- |
+| Dev server              | `bun start` (`bun ios` / `bun android` / `bun web`) |
+| Lint                    | `bun lint` (oxlint, type-aware)                     |
+| Typecheck               | `bun typecheck` (tsgo)                              |
+| Format touched files    | `bunx oxfmt <files>`                                |
+| Web production build    | `bun build:web` (outputs `dist/`)                   |
+| Regenerate Sanity types | `bun typegen`                                       |
+| Extract i18n strings    | `bunx lingui extract`                               |
+| Studio dev              | `cd studio && bun dev`                              |
 
-**Before committing:** `bun lint && bun typecheck`
+- Before committing: `bun lint && bun typecheck` (lint has pre-existing warnings; errors must be zero).
+- Do not run `bun format` / `bun format:check` repo-wide in an unrelated change: `main` has ~20 unformatted files, so it fails and rewrites them. Format only the files you touch.
+- There is no test suite.
 
-| Don't | Do |
-|-------|-----|
-| `npm`, `yarn`, `npx` | `bun`, `bunx` |
-| Hardcoded strings | Lingui `Trans` / `t` |
-| Inline styles | Unistyles `StyleSheet.create()` |
-| `styles.foo(value)` | `styles.useVariants()` |
-| Hardcoded colors | Theme tokens from `@/lib/tokens.ts` |
-| `any` types | Strict TypeScript |
-| Manual query types | `defineQuery()` + generated types |
-| Relative imports | `@/` alias |
-| `router.push()` | expo-router `Link` |
+## Environment
 
-**Commits:** [Conventional Commits](https://www.conventionalcommits.org/) — `type(scope): description`
+`.env` (gitignored, no example file) needs `EXPO_PUBLIC_POSTHOG_API_KEY`. Without it `bun build:web` fails during static rendering ("You must pass your PostHog project's api key").
 
-Types: `feat` | `fix` | `docs` | `style` | `refactor` | `perf` | `test` | `chore` | `ci`
+## Code rules
 
-## Architecture
+| Don't                           | Do                                                                 |
+| ------------------------------- | ------------------------------------------------------------------ |
+| Hardcoded UI strings            | Lingui `<Trans>` (JSX) / `` t`...` `` (strings)                    |
+| Inline styles                   | Unistyles `StyleSheet.create((theme) => ...)`                      |
+| Calling styles as functions     | `variants` + `styles.useVariants()`                                |
+| Hardcoded colors/spacing        | Tokens from `@/lib/tokens.ts` via the theme                        |
+| `any`                           | Strict types                                                       |
+| Hand-written query result types | `defineQuery()` in `src/lib/queries.ts` + `bun typegen`            |
+| Relative imports                | `@/` alias                                                         |
+| `router.push()` for user taps   | expo-router `<Link>` (`router.replace` only for programmatic flow) |
 
-```
-src/
-├── app/           # Expo Router routes
-├── components/    # React components
-├── hooks/         # Custom hooks
-├── lib/           # Utilities
-│   ├── queries.ts       # GROQ queries with defineQuery()
-│   ├── query-options.ts # TanStack Query options
-│   ├── sanity.types.ts  # Generated types (do not edit)
-│   ├── tokens.ts        # Design tokens
-│   └── styles.ts        # Theme config
-└── locales/       # i18n (en, es)
-studio/            # Sanity Studio (separate package)
-```
+Commits: Conventional Commits, `type(scope): description`.
 
-### Data Flow
+## Gotchas
 
-```
-Sanity CMS → schema (studio/) → queries.ts → typegen → sanity.types.ts
-                                     ↓
-                              query-options.ts → useQuery() → components
-```
+- `@/lib/styles` must be imported before anything that creates a themed stylesheet (first line of `index.ts` and `src/app/_layout.tsx`). Otherwise the static web build fails with Unistyles "no theme selected".
+- Code under `src/app` also runs on the server during static web rendering. Touching MMKV (`@/lib/storage`), PostHog storage, or other device APIs at module scope breaks `bun build:web` ("Tried to access storage on the server"). Access them inside effects or behind a runtime guard.
+- `src/lib/sanity.types.ts` is generated; never edit it. `bun typegen` extracts `studio/schema.json` from the studio schema, then scans `src/**/*.{ts,tsx}` for `defineQuery` calls. Run it after changing queries or `studio/schemaTypes/`.
+- Catalogs `src/locales/{en,es}/messages.po` are loaded directly by the Metro Lingui transformer. After changing UI strings run `bunx lingui extract` and fill the Spanish `msgstr` values. `lingui compile` is not needed for the app.
+- `cd studio && bunx sanity schema deploy && bunx sanity deploy` publishes the schema and Studio to production Sanity. Run it only when asked.
 
-## Patterns
+## Code Review Rules
 
-### Data Fetching
-```tsx
-import { useQuery } from '@tanstack/react-query'
-import { categoriesQueryOptions } from '@/lib/query-options'
-
-const { data } = useQuery(categoriesQueryOptions(locale))
-```
-
-### GROQ Queries
-```tsx
-import { defineQuery } from 'groq'
-
-export const MY_QUERY = defineQuery(/* groq */ `
-  *[_type == "post"] { _id, title }
-`)
-// Run `bun typegen` to generate types
-```
-
-### i18n
-```tsx
-import { Trans } from '@lingui/react/macro'
-import { t } from '@lingui/core/macro'
-
-<Trans>Play Now</Trans>        // JSX
-const label = t`Play Now`      // strings
-```
-
-### Styling
-```tsx
-import { StyleSheet } from 'react-native-unistyles'
-
-const styles = StyleSheet.create((theme) => ({
-  container: { backgroundColor: theme.colors.background }
-}))
-
-// For dynamic styles, use variants with useVariants()
-const styles = StyleSheet.create((theme) => ({
-  text: {
-    variants: {
-      color: {
-        primary: { color: theme.colors.text },
-        secondary: { color: theme.colors.textSecondary },
-      }
-    }
-  }
-}))
-
-// In component:
-styles.useVariants({ color: 'primary' })
-```
-
-**Prefer `styles.useVariants()`** over calling styles as functions for dynamic values.
-
-### Navigation
-```tsx
-import { Link, type Href } from 'expo-router'
-
-<Link href="/quiz/coffee">Start</Link>
-<Link href={`/quiz/${id}` as Href} asChild>
-  <Pressable />
-</Link>
-```
-
-## Workflows
-
-**After changing UI strings:**
-```sh
-bunx lingui extract && bunx lingui compile
-```
-
-**After changing queries or Sanity schema:**
-```sh
-bun typegen
-```
-
-**After changing Sanity schema (deploy):**
-```sh
-cd studio && bunx sanity schema deploy && bunx sanity deploy
-```
-
-## Key Files
-
-- `src/lib/tokens.ts` — colors, spacing, radius, typography
-- `src/lib/styles.ts` — theme configuration
-- `src/lib/queries.ts` — all GROQ queries
-- `src/lib/sanity.types.ts` — generated types (do not edit manually)
-- `studio/schemaTypes/` — Sanity schema definitions
+- Flag user-visible strings not wrapped in Lingui, and new strings missing a Spanish translation.
+- Flag module-scope access to storage, analytics, or device APIs reachable from `src/app` (breaks static web export).
+- Flag edits to `src/lib/sanity.types.ts` not produced by `bun typegen`.
