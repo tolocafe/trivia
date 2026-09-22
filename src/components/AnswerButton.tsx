@@ -25,7 +25,14 @@ const labels = ['A', 'B', 'C', 'D']
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 
-type AnswerState = 'answer0' | 'answer1' | 'answer2' | 'answer3' | 'correct' | 'incorrect' | 'dimmed'
+type AnswerState =
+	| 'answer0'
+	| 'answer1'
+	| 'answer2'
+	| 'answer3'
+	| 'correct'
+	| 'incorrect'
+	| 'dimmed'
 
 function getAnswerState(params: {
 	index: number
@@ -57,7 +64,12 @@ export function AnswerButton({
 	const scale = useSharedValue(1)
 	const opacity = useSharedValue(1)
 
-	const answerState = getAnswerState({ index, showResult, isCorrect, isSelected })
+	const answerState = getAnswerState({
+		index,
+		showResult,
+		isCorrect,
+		isSelected,
+	})
 	styles.useVariants({ answerState })
 
 	useEffect(() => {

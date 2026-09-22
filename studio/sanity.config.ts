@@ -1,7 +1,8 @@
-import { defineConfig } from 'sanity'
-import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
+import { defineConfig } from 'sanity'
 import { internationalizedArray } from 'sanity-plugin-internationalized-array'
+import { structureTool } from 'sanity/structure'
+
 import { schemaTypes } from './schemaTypes'
 
 const languages = [

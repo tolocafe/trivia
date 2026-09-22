@@ -6,43 +6,23 @@
 	"trailingComma": "all",
 	"printWidth": 80,
 	"experimentalSortImports": {
-		"internalPattern": [
-			"@/",
-			"~common",
-			"~workers"
-		],
+		"internalPattern": ["@/", "~common", "~workers"],
 		"order": "asc",
 		"groups": [
-			[
-				"value-builtin",
-				"type-builtin"
-			],
-			[
-				"value-external",
-				"type-external"
-			],
-			[
-				"value-internal",
-				"type-internal"
-			],
-			[
-				"value-parent",
-				"type-parent"
-			],
-			[
-				"value-sibling",
-				"value-index",
-				"type-sibling",
-				"type-index"
-			],
-			[
-				"type-import",
-				"ts-equals-import"
-			],
-			[
-				"unknown"
-			]
+			["value-builtin", "type-builtin"],
+			["value-external", "type-external"],
+			["value-internal", "type-internal"],
+			["value-parent", "type-parent"],
+			["value-sibling", "value-index", "type-sibling", "type-index"],
+			["type-import", "ts-equals-import"],
+			["unknown"]
 		],
 		"newlinesBetween": true
-	}
+	},
+	"ignorePatterns": [
+		"src/lib/sanity.types.ts",
+		"studio/sanity.types.ts",
+		"studio/schema.json",
+		"src/locales/*/messages.js"
+	]
 }

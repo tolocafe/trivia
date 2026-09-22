@@ -20,26 +20,15 @@
 		"lingui.config.js",
 		"studio/**/*"
 	],
-	"plugins": [
-		"react",
-		"unicorn",
-		"jsx-a11y",
-		"typescript"
-	],
+	"plugins": ["react", "unicorn", "jsx-a11y", "typescript"],
 	"rules": {
-		"consistent-type-definitions": [
-			"warn",
-			"type"
-		],
+		"consistent-type-definitions": ["warn", "type"],
 		"capitalized-comments": "off",
 		"curly": "off",
 		"explicit-function-return-type": "off",
 		"explicit-module-boundary-types": "off",
 		"filename-case": "off",
-		"func-style": [
-			"warn",
-			"declaration"
-		],
+		"func-style": ["warn", "declaration"],
 		"id-length": "off",
 		"jsx-filename-extension": "off",
 		"jsx-props-no-spreading": "off",

@@ -1,7 +1,7 @@
 import { defineQuery } from 'groq'
 
-import { sanityClient } from '@/lib/sanity'
 import type { Locale } from '@/lib/i18n'
+import { sanityClient } from '@/lib/sanity'
 import type {
 	CATEGORIES_QUERYResult,
 	SUBCATEGORIES_QUERYResult,
@@ -86,7 +86,10 @@ export async function getSubcategories(parentId: string, locale: Locale) {
 	return sanityClient.fetch(SUBCATEGORIES_QUERY, { parentId, locale })
 }
 
-export async function getQuestionsByCategory(categoryId: string, locale: Locale) {
+export async function getQuestionsByCategory(
+	categoryId: string,
+	locale: Locale,
+) {
 	return sanityClient.fetch(QUESTIONS_BY_CATEGORY_QUERY, { categoryId, locale })
 }
 
