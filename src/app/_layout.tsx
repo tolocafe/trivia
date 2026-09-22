@@ -1,5 +1,4 @@
 import '@/lib/styles'
-
 import { t } from '@lingui/core/macro'
 import { I18nProvider } from '@lingui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -9,12 +8,11 @@ import { PostHogProvider } from 'posthog-react-native'
 import { Image, Text, View } from 'react-native'
 import { StyleSheet, useUnistyles } from 'react-native-unistyles'
 
+import icon from '@/assets/icon.png'
 import { LanguageToggle } from '@/components/LanguageToggle'
 import { i18n as i18nConfig } from '@/lib/i18n'
 import { posthog } from '@/lib/posthog'
 import { typography } from '@/lib/tokens'
-
-import icon from '@/assets/icon.png'
 
 const styles = StyleSheet.create((theme) => ({
 	headerIcon: {

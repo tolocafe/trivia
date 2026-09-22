@@ -38,10 +38,10 @@ bun dev                                              # Local development
 bunx sanity schema deploy && bunx sanity deploy      # Deploy schema + studio
 ```
 
-| Key | Value |
-|-----|-------|
-| Project ID | `uen7ijyc` |
-| Dataset | `production` |
+| Key        | Value        |
+| ---------- | ------------ |
+| Project ID | `uen7ijyc`   |
+| Dataset    | `production` |
 
 ## Tech Stack
 
