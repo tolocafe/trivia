@@ -24,7 +24,7 @@ Package manager is bun. Use `bun` / `bunx`, never `npm`, `yarn`, `npx`.
 | Studio dev              | `cd studio && bun dev`                              |
 
 - Before committing: `bun lint && bun typecheck && bun format:check` (lint has pre-existing warnings; errors must be zero). Typecheck includes `studio/`, so install its deps first.
-- Generated files (Sanity typegen output, `studio/schema.json`, compiled Lingui catalogs) are excluded from oxfmt in `.oxfmtrc.json`.
+- Generated files (Sanity typegen output, `studio/schema.json`, compiled Lingui catalogs) are excluded from bun fmt in `.oxfmtrc.json`.
 - There is no test suite.
 
 ## Environment

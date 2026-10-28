@@ -14,7 +14,7 @@
 			["value-internal", "type-internal"],
 			["value-parent", "type-parent"],
 			["value-sibling", "value-index", "type-sibling", "type-index"],
-			["type-import", "ts-equals-import"],
+			["type-import"],
 			["unknown"]
 		],
 		"newlinesBetween": true
