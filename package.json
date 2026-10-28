@@ -10,8 +10,8 @@
 		"web": "expo start --web",
 		"build:web": "expo export --platform web",
 		"lint": "oxlint --type-aware --ignore-pattern src/lib/sanity.types.ts",
-		"format": "oxfmt .",
-		"format:check": "oxfmt --check",
+		"format": "bun fmt .",
+		"format:check": "bun fmt --check",
 		"typecheck": "tsgo --noEmit",
 		"typegen:extract": "cd studio && sanity schema extract --path=./schema.json --enforce-required-fields",
 		"typegen:generate": "sanity typegen generate",
@@ -62,11 +62,11 @@
 		"@types/react": "~19.1.0",
 		"@typescript/native-preview": "^7.0.0-dev.20251228.1",
 		"groq": "^3.78.1",
-		"oxfmt": "^0.20.0",
 		"oxlint": "^1.35.0",
 		"oxlint-tsgolint": "^0.10.0",
 		"playwright": "^1.57.0",
 		"sanity": "^3.78.1",
 		"typescript": "~5.9.2"
-	}
+	},
+	"packageManager": "bun@1.4.4"
 }
